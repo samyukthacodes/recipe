@@ -24,7 +24,6 @@ Ensure to include the following elements in the recipe suggestions:
 4. Cooking Time
 5. Type (breakfast, lunch, dinner)
 6. Cooking Style (Airfryer, Stove, Oven, Grill, Blender, Other)
-7. Calories and Nutrition Values
 
 Response should be in the following JSON Format
 
@@ -37,8 +36,7 @@ Response should be in the following JSON Format
     "ingredients": <list of ingredients>,
     "instructions": <instructions>
     "cooking_time": <cooking time>,
-    "calories": <calories>,
-    "nutrition_values": <nutrition values>
+    "servings": <number of servings>
     }]
 }
 
@@ -53,8 +51,7 @@ Response should be like the following
         "ingredients": [ "1 cup oats", "1/2 cup chocolate chips", "1/2 cup smooth peanut butter", "1/4 cup maple syrup", "1/4 cup crushed cashew nuts" ],
         "instructions": "1. Preheat the oven to 350°F (175°C).\n2. In a mixing bowl, combine the oats, chocolate chips, peanut butter, maple syrup, and crushed cashew nuts. Mix well.\n3. Press the mixture into a greased baking dish.\n4. Bake in the preheated oven for 15-20 minutes or until the edges turn golden brown.\n5. Remove from the oven and let it cool completely before cutting into bars. Enjoy!",
         "cooking_time": "25 minutes",
-        "calories": 300,
-        "nutrition_values": {"protein": 10, "carbs": 40, "fat": 15, "fiber": 5}
+        "servings": 4
         },
         { "name": "Strawberry Almond Smoothie",
         "type": "breakfast",
@@ -62,8 +59,7 @@ Response should be like the following
         "ingredients": [ "1 cup strawberries (fresh or frozen)", "1 cup almond milk", "1 tablespoon almond butter", "1 tablespoon maple syrup", "1 handful crushed ice" ],
         "instructions": "1. In a blender, combine the strawberries, almond milk, almond butter, maple syrup, and crushed ice.\n2. Blend until smooth and creamy.\n3. Pour into glasses and garnish with sliced strawberries, if desired. Enjoy!",
         "cooking_time": "5 minutes",
-        "calories": 150,
-        "nutrition_values": {"protein": 5, "carbs": 20, "fat": 8, "fiber": 3}
+        "servings": 2
         }
      ] }
 """
@@ -97,7 +93,10 @@ def recipe_generator():
     else:
         custom_type = None
 
-    user_prompt = f"Provide personalized vegan recipes based on dietary preferences: {dietary_preferences}. Restrictions: {restrictions}. Available Ingredients: {available_ingredients}. Type: {meal_type}. Cooking Time: {cooking_time} minutes. Cooking Style: {cooking_style}."
+    # Input for the number of servings
+    servings = st.number_input("Number of Servings:", min_value=1, value=4, step=1)
+
+    user_prompt = f"Provide personalized vegan recipes based on dietary preferences: {dietary_preferences}. Restrictions: {restrictions}. Available Ingredients: {available_ingredients}. Type: {meal_type}. Cooking Time: {cooking_time} minutes. Cooking Style: {cooking_style}. Servings: {servings}."
 
     if st.button("Generate Recipe Suggestions"):
         if dietary_preferences and available_ingredients:
@@ -118,9 +117,7 @@ def recipe_generator():
                 st.subheader('Instructions')
                 st.write(recipe["instructions"])
                 st.write("⏰ Cooking time: " + recipe["cooking_time"] + " minutes")
-                st.subheader('Calories and Nutrition Values')
-                st.write("Calories: " + str(recipe["calories"]))
-                st.write("Nutrition Values: " + str(recipe["nutrition_values"]))
+                st.write("Servings: " + str(recipe["servings"]))
                 st.divider()
 
             # Allow user to add reviews after seeing the recipes
@@ -154,10 +151,8 @@ def recipe_generator():
         st.write(random_ingredients)
         st.subheader('Instructions')
         st.write(random_recipe_data["responses"][0]["instructions"])
-        st.write("⏰ Cooking time: " + random_recipe_data["responses"][0]["cooking_time"] + " minutes")
-        st.subheader('Calories and Nutrition Values')
-        st.write("Calories: " + str(random_recipe_data["responses"][0]["calories"]))
-        st.write("Nutrition Values: " + str(random_recipe_data["responses"][0]["nutrition_values"]))
+        st.write("⏰ Cooking time: " + random_recipe_data["responses"][0]["cooking_time"])
+        st.write("Servings: " + str(random_recipe_data["responses"][0]["servings"]))
         st.divider()
 
 # Run the Streamlit app
