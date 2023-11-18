@@ -50,6 +50,13 @@ NutriVeg is a Streamlit-based web application that provides personalized vegan r
 
 5. Access the app in your web browser at `http://localhost:8501`.
 
+## Team members
+1. [Samyuktha Sudheer](https://github.com/samyukthacodes)
+2. [Riya Derose Michael](https://github.com/riyadm77)
+3. [Rose Mary P John](https://github.com/maryrosejohn)
+3. [Thej T Thomas](https://github.com/thejtthomas)
+
+
 ## Contributions
 
 Contributions are welcome! If you find any issues or want to enhance the app, feel free to submit a pull request.
