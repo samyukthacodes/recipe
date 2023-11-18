@@ -32,7 +32,7 @@ Response should be in the following JSON Format
     {
     "name": <name of recipe>,
     "type": <type of meal>,
-    "cooking_style": <cooking style>,
+    "cooking_styles": <list of cooking styles>,
     "ingredients": <list of ingredients>,
     "instructions": <instructions>
     "cooking_time": <cooking time>,
@@ -47,7 +47,7 @@ Response should be like the following
 { "responses": [
       { "name": "Chocolate Peanut Butter Oat Bars",
         "type": "breakfast",
-        "cooking_style": "Oven",
+        "cooking_styles": ["Oven"],
         "ingredients": [ "1 cup oats", "1/2 cup chocolate chips", "1/2 cup smooth peanut butter", "1/4 cup maple syrup", "1/4 cup crushed cashew nuts" ],
         "instructions": "1. Preheat the oven to 350°F (175°C).\n2. In a mixing bowl, combine the oats, chocolate chips, peanut butter, maple syrup, and crushed cashew nuts. Mix well.\n3. Press the mixture into a greased baking dish.\n4. Bake in the preheated oven for 15-20 minutes or until the edges turn golden brown.\n5. Remove from the oven and let it cool completely before cutting into bars. Enjoy!",
         "cooking_time": "25 minutes",
@@ -55,7 +55,7 @@ Response should be like the following
         },
         { "name": "Strawberry Almond Smoothie",
         "type": "breakfast",
-        "cooking_style": "Blender",
+        "cooking_styles": ["Blender"],
         "ingredients": [ "1 cup strawberries (fresh or frozen)", "1 cup almond milk", "1 tablespoon almond butter", "1 tablespoon maple syrup", "1 handful crushed ice" ],
         "instructions": "1. In a blender, combine the strawberries, almond milk, almond butter, maple syrup, and crushed ice.\n2. Blend until smooth and creamy.\n3. Pour into glasses and garnish with sliced strawberries, if desired. Enjoy!",
         "cooking_time": "5 minutes",
@@ -85,10 +85,12 @@ def recipe_generator():
     available_ingredients = st.text_area("Available Ingredients (comma-separated):")
     meal_type = st.selectbox("Select Type:", ["Breakfast", "Lunch", "Dinner"])
     cooking_time = st.slider("Select Cooking Time (minutes):", min_value=1, max_value=120)
-    cooking_style = st.selectbox("Choose Cooking Style:", ["Airfryer", "Stove", "Oven", "Grill", "Blender", "Other"])
     
-    # If cooking style is chosen as "Other," allow the user to input the type
-    if cooking_style == "Other":
+    # Checkbox for multiple cooking styles
+    cooking_styles = st.multiselect("Choose Cooking Styles:", ["Airfryer", "Stove", "Oven", "Grill", "Blender", "Other"])
+
+    # If "Other" is selected, allow the user to input the type
+    if "Other" in cooking_styles:
         custom_type = st.text_input("Enter Custom Type:")
     else:
         custom_type = None
@@ -96,7 +98,7 @@ def recipe_generator():
     # Input for the number of servings
     servings = st.number_input("Number of Servings:", min_value=1, value=4, step=1)
 
-    user_prompt = f"Provide personalized vegan recipes based on dietary preferences: {dietary_preferences}. Restrictions: {restrictions}. Available Ingredients: {available_ingredients}. Type: {meal_type}. Cooking Time: {cooking_time} minutes. Cooking Style: {cooking_style}. Servings: {servings}."
+    user_prompt = f"Provide personalized vegan recipes based on dietary preferences: {dietary_preferences}. Restrictions: {restrictions}. Available Ingredients: {available_ingredients}. Type: {meal_type}. Cooking Time: {cooking_time} minutes. Cooking Styles: {cooking_styles}. Servings: {servings}."
 
     if st.button("Generate Recipe Suggestions"):
         if dietary_preferences and available_ingredients:
@@ -108,7 +110,7 @@ def recipe_generator():
             for recipe in recipes["responses"]:
                 st.header(recipe['name'])
                 st.subheader('Type: ' + (custom_type if custom_type else recipe['type']))
-                st.subheader('Cooking Style: ' + recipe['cooking_style'])
+                st.subheader('Cooking Styles: ' + ', '.join(recipe['cooking_styles']))
                 st.subheader('Ingredients')
                 ingredients = " "
                 for i in recipe['ingredients']:
@@ -143,7 +145,7 @@ def recipe_generator():
         random_recipe_data = json.loads(random_recipe, strict=False)
         st.header(random_recipe_data["responses"][0]["name"])
         st.subheader('Type: ' + random_recipe_data["responses"][0]["type"])
-        st.subheader('Cooking Style: ' + random_recipe_data["responses"][0]["cooking_style"])
+        st.subheader('Cooking Styles: ' + ', '.join(random_recipe_data["responses"][0]["cooking_styles"]))
         st.subheader('Ingredients')
         random_ingredients = " "
         for i in random_recipe_data["responses"][0]["ingredients"]:
