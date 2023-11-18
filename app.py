@@ -7,7 +7,8 @@ from pathlib import Path
 import json
 # Load .env file
 load_dotenv()
-
+st.set_page_config(page_title = "NutriVegan")
+st.header("NutriVegan")
 # Set up OpenAI API key
 client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
@@ -64,7 +65,6 @@ def get_personalized_recipes(prompt):
 
 # Main part of the Streamlit app
 def recipe_generator():
-    st.header("Vegan Recipe Generator")
     st.subheader("Personalized Vegan Recipes Based on Your Preferences")
 
     # User input for recipe generation
