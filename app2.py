@@ -14,16 +14,26 @@ client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 # Chat-based language model system messages
 system_messages = """
-Provide personalized vegan recipes based on dietary preferences, restrictions, and with available ingredients.
-Specify your dietary preferences, any restrictions, and available ingredients.
+Provide personalized vegan recipes(atleast two) based on:
+1. dietary preferences
+2. dietary restrictions
+3. Available ingredients.
+4. Cooking time(in minutes)
+5. Cooking Equipments Available
+6. Type of meal
+7. Number of servings
+8. Cuisine type
+
+Number of ingredients outside of the available ingredients shouldn't be more. Try to stay within the limit of available ingedients. 
+Cooking time should be within the limit mentioned with available ingredients. Lesser the cooking time, the better.
+Should take the available cooking equipments into consideration.
+
 Ensure to include the following elements in the recipe suggestions:
 1. Recipe Name
 2. Ingredients
 3. Instructions
-4. Cooking Time
-5. Type (breakfast, lunch, dinner)
-6. Cooking Style (Airfryer, Stove, Oven, Grill, Blender, Other)
-7. Cuisine Type (Mediterranean, Asian, Keto, etc.)
+4. Cooking Time(in minutes)
+5. Cuisine Type (Mediterranean, Asian, Keto, etc.)
 
 Response should be in the following JSON Format
 
@@ -31,31 +41,74 @@ Response should be in the following JSON Format
 "responses":[
     {
     "name": <name of recipe>,
-    "type": <type of meal>,
-    "cooking_styles": <list of cooking styles>,
     "ingredients": <list of ingredients>,
     "instructions": <instructions>
     "cooking_time": <cooking time>,
-    "servings": <number of servings>,
+    "servings": <servings>,
     "cuisine_type": <cuisine type>
     }]
 }
 
 Example:
-For Dietary preferences: Gluten-free; Dietary Restrictions: Soy-free; Available ingredients: Chickpeas, kale, sweet potatoes, coconut milk
+For 
+Dietary preferences: High Protein; 
+Dietary Restrictions: No sugar; 
+Available ingredients: Oats, banana, blueberry, strawberry, almond milk, cocoa powder, cashew nuts, peanut butter
+Type of meal: Breakfast
+Cooking time: 15
+Cooking Equipments Available: Blender
+Number of servings: 3
+Cuisine type: None
+
+
 Response should be like the following
 
-{ "responses": [
-      { "name": "Stir-fried Chickpea Delight",
-        "type": "lunch",
-        "cooking_styles": ["Airfryer", "Stove"],
-        "ingredients": [ "1 cup chickpeas", "1 cup kale", "1 cup sweet potatoes", "1/2 cup coconut milk" ],
-        "instructions": "1. Heat oil in a pan.\n2. Stir-fry chickpeas, kale, and sweet potatoes until cooked.\n3. Add coconut milk and stir until well combined.\n4. Serve hot and enjoy!",
-        "cooking_time": "20 minutes",
+{
+"responses":[
+    {
+    "name": "Protein-Packed Berry Smoothie Bowl",
+    "ingredients": ["1 cup oats", "1 banana", "1/2 cup blueberries", "1/2 cup strawberries", "1 cup almond milk", "1 tbsp cocoa powder", "2 tbsp cashew nuts", "2 tbsp peanut butter"],
+    "instructions": "1. In a blender, combine oats, banana, blueberries, strawberries, almond milk, cocoa powder, cashew nuts, and peanut butter.
+2. Blend until smooth and creamy.
+3. Pour the smoothie into bowls.
+4. Top with additional berries, cashew nuts, and a drizzle of peanut butter.
+5. Serve and enjoy!",
+    "cooking_time": "15 minutes",
+    "servings": 3,
+    "cuisine_type": "Breakfast"
+    },
+    { "name": "Protein-Packed Banana Smoothie Bowl",
+        "ingredients": [ "1 cup oats", "1 banana", "1 cup blueberries", "1 cup strawberries", "1 cup almond milk", "2 tbsp cocoa powder", "2 tbsp cashew nuts", "2 tbsp peanut butter" ],
+        "instructions": "1. In a blender, combine oats, banana, blueberries, strawberries, almond milk, cocoa powder, cashew nuts, and peanut butter.
+2. Blend until smooth and creamy.
+3. Pour the mixture into bowls.
+4. Optional: Top with additional banana slices, blueberries, strawberries, and cashew nuts.
+5. Serve immediately and enjoy!",
+        "cooking_time": "15 minutes",
         "servings": 3,
-        "cuisine_type": "Asian"
+        "cuisine_type": "Breakfast"
+    },
+    { 
+        "name": "Protein-Packed Banana Muffins",
+        "ingredients": ["1 cup oats", "1 scoop protein powder", "1/2 cup almond milk", "1/4 cup cashews", "1/4 cup cocoa powder", "1 banana", "2 tbsp peanut butter"],
+        "instructions": "1. Preheat the oven to 350°F (175°C). Grease a muffin tin or line with cupcake liners.
+2. In a blender, combine oats, protein powder, almond milk, cashews, cocoa powder, banana, and peanut butter.
+3. Blend until smooth and creamy.
+4. Pour the mixture into a mixing bowl.
+5. Add additional oats or almond milk if needed to adjust the consistency.
+6. Spoon the batter into the prepared muffin tin, filling each cup about 3/4 full.
+7. Optional: Top with additional cashews or banana slices.
+8. Bake for 12-15 minutes, or until a toothpick inserted into the center of a muffin comes out clean.
+9. Remove from the oven and let cool for a few minutes before transferring to a wire rack to cool completely.
+10. Serve and enjoy!",
+        "cooking_time": "17 minutes",
+        "servings": 2,
+        "cuisine_type": "American"
         }
-     ] }
+
+]
+}
+
 """
 
 
@@ -73,8 +126,6 @@ def get_personalized_recipes(prompt):
 
 def display_recipe(recipe):
     st.header(recipe['name'])
-    st.subheader('Type: ' + recipe['type'])
-    st.subheader('Cooking Styles: ' + ', '.join(recipe['cooking_styles']))
     st.subheader('Cuisine Type: ' + recipe['cuisine_type'])
     st.subheader('Ingredients')
     ingredients = "\n".join("- " + i for i in recipe['ingredients'])
