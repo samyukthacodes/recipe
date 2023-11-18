@@ -33,7 +33,6 @@ Ensure to include the following elements in the recipe suggestions:
 2. Ingredients
 3. Instructions
 4. Cooking Time(in minutes)
-5. Cuisine Type (Mediterranean, Asian, Keto, etc.)
 
 Response should be in the following JSON Format
 
@@ -45,7 +44,6 @@ Response should be in the following JSON Format
     "instructions": <instructions>
     "cooking_time": <cooking time>,
     "servings": <servings>,
-    "cuisine_type": <cuisine type>
     }]
 }
 
@@ -74,8 +72,7 @@ Response should be like the following
 4. Top with additional berries, cashew nuts, and a drizzle of peanut butter.
 5. Serve and enjoy!",
     "cooking_time": "15 minutes",
-    "servings": 3,
-    "cuisine_type": "Breakfast"
+    "servings": 3
     },
     { "name": "Protein-Packed Banana Smoothie Bowl",
         "ingredients": [ "1 cup oats", "1 banana", "1 cup blueberries", "1 cup strawberries", "1 cup almond milk", "2 tbsp cocoa powder", "2 tbsp cashew nuts", "2 tbsp peanut butter" ],
@@ -85,8 +82,7 @@ Response should be like the following
 4. Optional: Top with additional banana slices, blueberries, strawberries, and cashew nuts.
 5. Serve immediately and enjoy!",
         "cooking_time": "15 minutes",
-        "servings": 3,
-        "cuisine_type": "Breakfast"
+        "servings": 3
     },
     { 
         "name": "Protein-Packed Banana Muffins",
@@ -102,8 +98,7 @@ Response should be like the following
 9. Remove from the oven and let cool for a few minutes before transferring to a wire rack to cool completely.
 10. Serve and enjoy!",
         "cooking_time": "17 minutes",
-        "servings": 2,
-        "cuisine_type": "American"
+        "servings": 2
         }
 
 ]
@@ -126,13 +121,12 @@ def get_personalized_recipes(prompt):
 
 def display_recipe(recipe):
     st.header(recipe['name'])
-    st.subheader('Cuisine Type: ' + recipe['cuisine_type'])
     st.subheader('Ingredients')
     ingredients = "\n".join("- " + i for i in recipe['ingredients'])
     st.write(ingredients)
     st.subheader('Instructions')
     st.write(recipe["instructions"])
-    st.write("⏰ Cooking time: " + recipe["cooking_time"] + " minutes")
+    st.write("⏰ Cooking time: " + recipe["cooking_time"])
     st.write("Servings: " + str(recipe["servings"]))
     st.divider()
 
