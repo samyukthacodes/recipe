@@ -26,10 +26,10 @@ load_dotenv()
 st.sidebar.image(image, width=275)
 
 # Set up OpenAI API key
-client = openai.OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+client = openai.OpenAI(api_key=st.secrets['OPENAI_API_KEY']))
 
 # Set up Deta
-DETA_KEY = os.getenv('DETA_KEY')
+DETA_KEY = st.secrets['DETA_KEY']
 deta = Deta(DETA_KEY)
 db = deta.Base('user')
 recipes_db = deta.Base('recipes')
