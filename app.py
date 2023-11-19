@@ -26,7 +26,7 @@ load_dotenv()
 st.sidebar.image(image, width=275)
 
 # Set up OpenAI API key
-client = openai.OpenAI(api_key=st.secrets['OPENAI_API_KEY']))
+client = openai.OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
 
 # Set up Deta
 DETA_KEY = st.secrets['DETA_KEY']
