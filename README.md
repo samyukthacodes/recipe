@@ -22,6 +22,9 @@ NutriVeg is a Streamlit-based web application that provides personalized vegan r
 7. **Cuisine Type:** Input the preferred cuisine type.
 8. **Number of Servings:** Adjust the number of servings using the number input.
 
+## Our Website
+https://nutriveg.streamlit.app/
+
 ## Getting Started
 
 1. Clone the repository:
