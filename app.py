@@ -19,7 +19,7 @@ if 'is_authenticated' not in st.session_state:
     st.session_state.is_authenticated = False
 image = Image.open('nutrilogo.png')
 
-st.set_page_config(page_title='NutriVeg', page_icon='nutriilogo.png')
+st.set_page_config(page_title='NutriVeg', page_icon='nutrilogo.png')
 
 # Load .env file
 load_dotenv()
@@ -366,7 +366,7 @@ if __name__ == "__main__":
     
 # 2. Horizontal menu
     st.title("NutriVeg")
-    st.subheader("Elevate Your Plate with AI-Powered Plant Bliss")
+    st.subheader("Your Personal Vegan Chef and Culinary Social Hub!")
     selected_horizontal = option_menu(None, ["Home", "Dashboard", "Social media","Upload Recipe", 'Contact'], 
         icons=['house', 'chat-dots','people-fill','clock-history', 'telephone'], 
         menu_icon="cast", default_index=0, orientation="horizontal")
