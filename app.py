@@ -24,7 +24,24 @@ st.set_page_config(page_title='NutriVeg', page_icon='nutrilogo.png')
 # Load .env file
 load_dotenv()
 st.sidebar.image(image, width=275)
+hide_streamlit_style = """
+<style>
+footer {
+    visibility: hidden;
+}
 
+footer:after {
+    content: 'Made by AIholics'; 
+    visibility: visible;
+    display: block;
+    position: relative;
+    padding: 5px; /* or any other valid value */
+    top: 2px;
+}
+</style>
+"""
+
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # Set up OpenAI API key
 client = openai.OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
 
@@ -368,7 +385,7 @@ if __name__ == "__main__":
     st.title("NutriVeg")
     st.subheader("Your Personal Vegan Chef and Culinary Social Hub!")
     selected_horizontal = option_menu(None, ["Home", "Dashboard", "Social media","Upload Recipe", 'Contact'], 
-        icons=['house', 'chat-dots','people-fill','clock-history', 'telephone'], 
+        icons=['house', 'chat-dots','people-fill','upload', 'telephone'], 
         menu_icon="cast", default_index=0, orientation="horizontal")
 
 
